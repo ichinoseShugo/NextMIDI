@@ -5,8 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NextMIDI"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="350" Width="525"
+        Loaded="Window_Loaded" Unloaded="Window_Unloaded">
     <Grid>
-        
+        <Button x:Name="MIDIOn" Content="MIDI On" HorizontalAlignment="Left" Margin="110,111,0,0" VerticalAlignment="Top" Width="75" Click="MIDIOn_Click"/>
+
     </Grid>
 </Window>
