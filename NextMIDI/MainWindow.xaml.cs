@@ -1,5 +1,8 @@
-﻿using NextMidi.DataElement;
+﻿using NextMidi.Data.Domain;
+using NextMidi.DataElement;
+using NextMidi.Filing.Midi;
 using NextMidi.MidiPort.Output;
+using NextMidi.Time;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +27,8 @@ namespace NextMIDI
     public partial class MainWindow : Window
     {
         MidiOutPort port;
+        MidiPlayer player;
+        MidiFileDomain domain;
 
         public MainWindow()
         {
@@ -33,6 +38,7 @@ namespace NextMIDI
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             InitMIDI(0);
+            CompositionTarget.Rendering += Render;
         }
 
         private void Window_Unloaded(object sender, RoutedEventArgs e)
@@ -55,21 +61,32 @@ namespace NextMIDI
             {
                 Console.WriteLine("no such port exists");
                 return;
-            }
+            }            
+            //楽器を変更
+            //port.Send(new ProgramEvent(2));
+            //note = new NoteEvent(69,112,1,100);
 
-            // Program No.5 に切り替え
-            port.Send(new ProgramEvent(4));
+            var midiData = MidiReader.ReadFrom(@"C:\Users\inuga_000\Desktop\c4.mid", Encoding.GetEncoding("shift-jis"));
+            // テンポマップを作成
+            domain = new MidiFileDomain(midiData);
+            player = new MidiPlayer(port);
+            player.Play(domain);
+            
         }
 
         private void MIDIOn_Click(object sender, RoutedEventArgs e)
         {
-            // ドレミファソラシド
-            foreach (byte n in new byte[8] { 60, 62, 64, 65, 67, 69, 71, 72 })
+            player.Play(domain);
+        }
+
+        void Render(object sender, EventArgs e)
+        {
+            //if (player.Playing == false) player.Play(domain);
+            //Check.Text = player.MusicTime.Tick+","+player.Time+",";
+            if (player.MusicTime.Tick >= 100)
             {
-                // ベロシティ 112 でノートオンを送信
-                port.Send(new NoteOnEvent(n, 112));
-                Thread.Sleep(n != 72 ? 500 : 1500);
-                port.Send(new NoteOffEvent(n));
+                //player.Stop();
+                //player.Play(domain);
             }
         }
     }

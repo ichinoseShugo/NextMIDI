@@ -9,6 +9,7 @@
         Loaded="Window_Loaded" Unloaded="Window_Unloaded">
     <Grid>
         <Button x:Name="MIDIOn" Content="MIDI On" HorizontalAlignment="Left" Margin="110,111,0,0" VerticalAlignment="Top" Width="75" Click="MIDIOn_Click"/>
+        <TextBlock x:Name="Check" HorizontalAlignment="Left" Margin="95,192,0,0" TextWrapping="Wrap" Text="n=20" VerticalAlignment="Top"/>
 
     </Grid>
 </Window>
